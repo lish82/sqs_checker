@@ -1,0 +1,27 @@
+version: 2
+jobs:
+  build:
+    docker:
+       - image: ruby:2.6.3-alpine3.9
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - run:
+          name: install build-deps
+          command: apk add --no-cache --virtual .build-deps make binutils linux-headers g++
+      - run:
+          name: update bundler
+          command: gem up -N --force bundler
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "Gemfile.lock" }}
+      - run:
+          name: install dependencies
+          command: bin/setup
+      - save_cache:
+          paths:
+            - ./tmp/bundle
+          key: v1-dependencies-{{ checksum "Gemfile.lock" }}
+      - run:
+          name: test
+          command: bin/rake

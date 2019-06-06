@@ -1,0 +1,13 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require_relative '../config/boot'
+
+tap do
+  original_dir = Dir.pwd
+  Dir.chdir(File.expand_path('..', __dir__))
+
+  load Gem.bin_path('rake', 'rake')
+ensure
+  Dir.chdir(original_dir)
+end

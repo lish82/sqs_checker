@@ -1,0 +1,5 @@
+# frozen_string_literal: true
+
+require 'sqs_checker/command'
+
+SqsChecker::Command.new.start(ARGV)

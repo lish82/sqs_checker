@@ -1,0 +1,14 @@
+/.bundle/
+/.yardoc
+/coverage/
+/doc/
+/pkg/
+/tmp/
+*.bundle
+/.rspec_status
+/.test_queue_stats
+
+/.idea/
+/*.iml
+
+/credentials.json
