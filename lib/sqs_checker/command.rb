@@ -25,12 +25,15 @@ module SqsChecker
 
     # @return [Pathname]
     def base_dir
-      Pathname.new(Dir.pwd)
+      ::Pathname.new(::Dir.pwd)
     end
 
-    # @return [Hash{Symbol, String => String}] credentials
-    def credentials
-      @credentials ||= ::JSON.parse(::File.read(base_dir.join('credentials.json')))
+    # @return [Hash{String => String}]
+    def config
+      @config ||= begin
+        config_file = base_dir.join('config.json')
+        config_file.exist? ? ::JSON.parse(config_file.read) : {}
+      end
     end
 
     # @return [void]
@@ -47,7 +50,7 @@ module SqsChecker
 
       puts '[Start] listing'
       require 'sqs_checker/event_type_fetcher'
-      EventTypeFetcher.new(credentials: credentials, queue_name: queue_name).fetch
+      EventTypeFetcher.new(config: config, queue_name: queue_name).fetch
       puts '[End] listing'
     end
 
@@ -66,7 +69,7 @@ module SqsChecker
       puts '[Start] Delete'
       require 'sqs_checker/event_deleter'
       EventDeleter.
-        new(credentials: credentials, queue_name: queue_name, type_name: type_name).
+        new(config: config, queue_name: queue_name, type_name: type_name).
         execute!
       puts '[End] Delete'
     end

@@ -10,48 +10,36 @@ module SqsChecker
 
     using CoreExt
 
-    # @param [Hash{Symbol, String => String}] credentials
+    # @param [Hash{Symbol, String => String}] config
     # @param [String] queue_name
     #
     # @raise [RuntimeError]
-    def initialize(credentials:, queue_name:)
+    def initialize(config:, queue_name:)
       if queue_name.match?(/production/i)
         raise "Danger!! queue_name `#{queue_name}` includes substring `Production`"
       end
 
-      @credentials = credentials
+      @config = config
       @queue_name = queue_name
     end
 
+    # @return [nil, Aws::AssumeRoleCredentials]
     def aws_credentials
-      @aws_credentials ||= @credentials['session_token'] ? sts_credentials : normal_credentials
+      sts_credentials if @config['role_arn']
     end
 
-    def normal_credentials
-      ::Aws::Credentials.new(
-        access_key_id: @credentials.fetch('access_key_id'),
-        secret_access_key: @credentials.fetch('secret_access_key'),
-      )
-    end
-
+    # @return [Aws::AssumeRoleCredentials]
     def sts_credentials
-      ::Aws::AssumeRoleCredentials.new(
-        client: ::Aws::STS::Client.new(
-          access_key_id: @credentials.fetch('access_key_id'),
-          secret_access_key: @credentials.fetch('secret_access_key'),
-          session_token: @credentials.fetch('session_token'),
-        ),
-        role_arn: @credentials.fetch('role_arn'),
+      @sts_credentials ||= ::Aws::AssumeRoleCredentials.new(
+        client: ::Aws::STS::Client.new,
+        role_arn: @config.fetch('role_arn'),
         role_session_name: 'sqs_checker',
       )
     end
 
     # @return [Aws::SQS::Client]
     def sqs_client
-      @sqs_client ||= ::Aws::SQS::Client.new(
-        credentials: aws_credentials,
-        region: @credentials.fetch('region'),
-      )
+      @sqs_client ||= ::Aws::SQS::Client.new(credentials: aws_credentials)
     end
 
     # @return [String]

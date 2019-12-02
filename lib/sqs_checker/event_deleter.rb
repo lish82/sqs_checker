@@ -4,10 +4,10 @@ require 'sqs_checker/sqs_helper'
 
 module SqsChecker
   class EventDeleter # :nodoc:
-    # @param [Hash{Symbol, String => String}] credentials
+    # @param [Hash{String => String}] config
     # @param [String] queue_name
-    def initialize(credentials:, queue_name:, type_name:)
-      @sqs_helper = SqsHelper.new(credentials: credentials, queue_name: queue_name)
+    def initialize(config:, queue_name:, type_name:)
+      @sqs_helper = SqsHelper.new(config: config, queue_name: queue_name)
       @type_name = type_name
     end
 
