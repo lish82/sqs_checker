@@ -20,17 +20,20 @@ Layout/DotPosition:
 Layout/EndOfLine:
   EnforcedStyle: lf
 
-Layout/IndentFirstArgument:
+Layout/FirstArgumentIndentation:
   EnforcedStyle: consistent
 
-Layout/IndentFirstArrayElement:
+Layout/FirstArrayElementIndentation:
   EnforcedStyle: consistent
 
-Layout/IndentFirstHashElement:
+Layout/FirstHashElementIndentation:
   EnforcedStyle: consistent
 
 Layout/MultilineMethodCallIndentation:
   EnforcedStyle: indented
+
+Lint/SuppressedException:
+  AllowComments: true
 
 Metrics/BlockLength:
   Exclude:
