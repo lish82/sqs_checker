@@ -17,7 +17,7 @@ jobs:
           - v1-dependencies-{{ checksum "Gemfile.lock" }}
       - run:
           name: install dependencies
-          command: bin/setup
+          command: BUNDLE_GITHUB__COM="${GITHUB_ACCESS_TOKEN}:x-oauth-basic" bin/setup
       - save_cache:
           paths:
             - ./tmp/bundle
