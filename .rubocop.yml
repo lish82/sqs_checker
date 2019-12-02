@@ -4,7 +4,7 @@ require:
 
 AllCops:
   CacheRootDirectory: tmp/cache
-  TargetRubyVersion: 2.6.3
+  TargetRubyVersion: 2.6.5
   Exclude:
     - tmp/bundle/**/*
   Include:

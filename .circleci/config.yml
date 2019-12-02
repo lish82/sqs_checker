@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-       - image: ruby:2.6.3-alpine3.9
+       - image: ruby:2.6.5-alpine3.10
     working_directory: ~/repo
     steps:
       - checkout
