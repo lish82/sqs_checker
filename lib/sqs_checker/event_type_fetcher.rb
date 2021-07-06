@@ -4,10 +4,9 @@ require 'sqs_checker/sqs_helper'
 
 module SqsChecker
   class EventTypeFetcher # :nodoc:
-    # @param [Hash{String => String}] config
     # @param [String] queue_name
-    def initialize(config:, queue_name:)
-      @sqs_helper = SqsHelper.new(config: config, queue_name: queue_name)
+    def initialize(queue_name:)
+      @sqs_helper = SqsHelper.new(queue_name: queue_name)
     end
 
     # @return [void]

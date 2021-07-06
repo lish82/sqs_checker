@@ -10,36 +10,20 @@ module SqsChecker
 
     using CoreExt
 
-    # @param [Hash{Symbol, String => String}] config
     # @param [String] queue_name
     #
     # @raise [RuntimeError]
-    def initialize(config:, queue_name:)
+    def initialize(queue_name:)
       if queue_name.match?(/production/i)
         raise "Danger!! queue_name `#{queue_name}` includes substring `Production`"
       end
 
-      @config = config
       @queue_name = queue_name
-    end
-
-    # @return [nil, Aws::AssumeRoleCredentials]
-    def aws_credentials
-      sts_credentials if @config['role_arn']
-    end
-
-    # @return [Aws::AssumeRoleCredentials]
-    def sts_credentials
-      @sts_credentials ||= ::Aws::AssumeRoleCredentials.new(
-        client: ::Aws::STS::Client.new,
-        role_arn: @config.fetch('role_arn'),
-        role_session_name: 'sqs_checker',
-      )
     end
 
     # @return [Aws::SQS::Client]
     def sqs_client
-      @sqs_client ||= ::Aws::SQS::Client.new(credentials: aws_credentials)
+      @sqs_client ||= ::Aws::SQS::Client.new
     end
 
     # @return [String]
