@@ -33,6 +33,6 @@ RSpec.configure do |config|
   end
 end
 
-Dir.glob(File.expand_path('supports/**/*.rb', __dir__)) do |path|
+Dir.glob(File.expand_path('supports/**/*.rb', __dir__)).sort.each do |path|
   require path
 end

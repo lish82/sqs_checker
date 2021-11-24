@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe SqsChecker do
+RSpec.describe SqsChecker do # rubocop:disable RSpec/FilePath
   describe '::VERSION' do
     subject(:version) { described_class::VERSION }
 
