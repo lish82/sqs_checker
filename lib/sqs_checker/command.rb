@@ -50,7 +50,7 @@ module SqsChecker
 
       puts '[Start] listing'
       require 'sqs_checker/event_type_fetcher'
-      EventTypeFetcher.new(config: config, queue_name: queue_name).fetch
+      EventTypeFetcher.new(queue_name: queue_name).fetch
       puts '[End] listing'
     end
 
@@ -69,14 +69,14 @@ module SqsChecker
       puts '[Start] Delete'
       require 'sqs_checker/event_deleter'
       EventDeleter.
-        new(config: config, queue_name: queue_name, type_name: type_name).
+        new(queue_name: queue_name, type_name: type_name).
         execute!
       puts '[End] Delete'
     end
 
     # @return [void]
     def show_delete_usage
-      puts 'Usage: sqs_checker list [queue_name] [target_event_type]'
+      puts 'Usage: sqs_checker delete [queue_name] [target_event_type]'
     end
   end
 end
